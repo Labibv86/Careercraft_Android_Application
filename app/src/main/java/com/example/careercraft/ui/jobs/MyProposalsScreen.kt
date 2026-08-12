@@ -20,7 +20,8 @@ private val tabs = listOf("Pending", "Accepted", "Rejected", "Withdrawn")
 private fun statusFor(tab: String) = tab.lowercase()
 
 @Composable
-fun MyProposalsScreen(viewModel: MyProposalsViewModel = viewModel()) {
+
+fun MyProposalsScreen(onOpenContract: (String) -> Unit, viewModel: MyProposalsViewModel = viewModel()) {
     var selectedTab by remember { mutableStateOf("Pending") }
     val uiState by viewModel.uiState.collectAsState()
 
@@ -86,6 +87,15 @@ fun MyProposalsScreen(viewModel: MyProposalsViewModel = viewModel()) {
                                         contentPadding = PaddingValues(0.dp)
                                     ) {
                                         Text("WITHDRAW", color = Red, style = MaterialTheme.typography.labelSmall)
+                                    }
+                                }
+                                proposal.contracts.firstOrNull()?.let { ref ->
+                                    Spacer(Modifier.height(8.dp))
+                                    TextButton(
+                                        onClick = { onOpenContract(ref.contractId) },
+                                        contentPadding = PaddingValues(0.dp)
+                                    ) {
+                                        Text("OPEN CONTRACT", color = Black, style = MaterialTheme.typography.labelSmall)
                                     }
                                 }
                             }

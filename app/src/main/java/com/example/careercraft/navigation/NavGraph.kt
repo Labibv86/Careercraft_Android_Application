@@ -15,6 +15,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.careercraft.ui.jobs.*
 import com.example.careercraft.ui.client.*
+import com.example.careercraft.ui.contracts.*
+
 
 object Routes {
     const val SPLASH = "splash"
@@ -38,9 +40,12 @@ object Routes {
     const val MY_JOBS = "my_jobs"
     const val JOB_APPLICANTS = "job_applicants/{jobId}"
     fun jobApplicants(jobId: String) = "job_applicants/$jobId"
-    const val CONTRACT_DETAIL = "contract_detail"
+    const val CONTRACT_DETAIL = "contract_detail/{contractId}"
     const val CHAT_LIST = "chat_list"
-    const val CHAT = "chat"
+    const val CHAT = "chat/{contractId}"
+
+    fun contractDetail(contractId: String) = "contract_detail/$contractId"
+    fun chat(contractId: String) = "chat/$contractId"
     const val PORTFOLIO_GRID = "portfolio_grid"
     const val PORTFOLIO_FORM = "portfolio_form"
     const val PROFILE_SETTINGS = "profile_settings"

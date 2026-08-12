@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 sealed class JobApplicantsUiState {
     data object Loading : JobApplicantsUiState()
     data class Ready(val applicants: List<ProposalWithFreelancer>) : JobApplicantsUiState()
-    data object Hired : JobApplicantsUiState()
+    data class Hired(val contractId: String) : JobApplicantsUiState()
     data class Error(val message: String) : JobApplicantsUiState()
 }
 
@@ -40,8 +40,8 @@ class JobApplicantsViewModel(
     fun hire(proposalId: String) {
         viewModelScope.launch {
             try {
-                clientRepository.hireFreelancer(proposalId)
-                _uiState.value = JobApplicantsUiState.Hired
+                val contractId = clientRepository.hireFreelancer(proposalId)
+                _uiState.value = JobApplicantsUiState.Hired(contractId)
             } catch (e: Exception) {
                 _uiState.value = JobApplicantsUiState.Error(e.message ?: "Could not hire this freelancer.")
             }

@@ -15,15 +15,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.careercraft.ui.theme.*
 
 @Composable
+
 fun JobApplicantsScreen(
     jobId: String,
-    onHired: () -> Unit,
+    onHired: (String) -> Unit,
     viewModel: JobApplicantsViewModel = viewModel(factory = JobApplicantsViewModelFactory(jobId))
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState) {
-        if (uiState is JobApplicantsUiState.Hired) onHired()
+        val state = uiState
+        if (state is JobApplicantsUiState.Hired) onHired(state.contractId)
     }
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {
