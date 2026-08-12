@@ -31,6 +31,12 @@ class SkillAssessmentViewModel(
         viewModelScope.launch {
             try {
                 val questions = repository.getQuestions()
+                if (questions.isEmpty()) {
+                    _uiState.value = AssessmentUiState.Error(
+                        "No assessment questions found. Check the assessment_questions table in Supabase."
+                    )
+                    return@launch
+                }
                 AssessmentAnswers.clear()
                 _uiState.value = AssessmentUiState.InProgress(questions, currentIndex = 0)
             } catch (e: Exception) {

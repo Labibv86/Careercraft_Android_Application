@@ -75,7 +75,14 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 onFinished = { navController.navigate(Routes.CAREER_MATCH) }
             )
         }
-        composable(Routes.CAREER_MATCH) { PlaceholderScreen("Career Match") }
+        composable(Routes.CAREER_MATCH) {
+            CareerMatchResultsScreen(
+                onAccept = {
+                    navController.navigate(Routes.FREELANCER_HOME) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                },
+                onNotSatisfied = { navController.navigate(Routes.CATEGORY_PICKER) }
+            )
+        }
         composable(Routes.CATEGORY_PICKER) {
             CategoryPickerScreen(
                 onCategoriesSaved = {
