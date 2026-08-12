@@ -50,7 +50,8 @@ object Routes {
     const val PORTFOLIO_FORM = "portfolio_form"
     const val PROFILE_SETTINGS = "profile_settings"
     const val NOTIFICATIONS = "notifications"
-    const val RATING = "rating"
+    const val RATING = "rating/{contractId}"
+    fun rating(contractId: String) = "rating/$contractId"
 
 
 
@@ -223,7 +224,16 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
         composable(Routes.PORTFOLIO_FORM) { PlaceholderScreen("Portfolio Form") }
         composable(Routes.PROFILE_SETTINGS) { PlaceholderScreen("Profile Settings") }
         composable(Routes.NOTIFICATIONS) { PlaceholderScreen("Notifications") }
-        composable(Routes.RATING) { PlaceholderScreen("Rating") }
+        composable(
+            route = Routes.RATING,
+            arguments = listOf(navArgument("contractId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
+            RatingScreen(
+                contractId = contractId,
+                onDone = { navController.navigate(Routes.SPLASH) { popUpTo(0) { inclusive = true } } }
+            )
+        }
 
 
 
