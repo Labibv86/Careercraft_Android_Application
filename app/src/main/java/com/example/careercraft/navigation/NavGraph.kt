@@ -137,7 +137,9 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 }
             )
         }
-        composable(Routes.MY_PROPOSALS) { PlaceholderScreen("My Proposals") }
+        composable(Routes.MY_PROPOSALS) {
+            MyProposalsScreen()
+        }
         composable(Routes.POST_JOB) { PlaceholderScreen("Post Job") }
         composable(Routes.MY_JOBS) { PlaceholderScreen("My Jobs") }
         composable(Routes.JOB_APPLICANTS) { PlaceholderScreen("Job Applicants") }
