@@ -64,9 +64,33 @@ fun PlaceholderScreen(name: String) {
 @Composable
 fun CareerCraftNavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = Routes.SPLASH) {
-        composable(Routes.SPLASH) { PlaceholderScreen("Splash") }
-        composable(Routes.LOGIN) { PlaceholderScreen("Login") }
-        composable(Routes.SIGNUP) { PlaceholderScreen("Sign Up") }
+        composable(Routes.SPLASH) {
+            SplashScreen(
+                onNavigateToLogin = {
+                    navController.navigate(Routes.LOGIN) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                },
+                onNavigateToDashboard = { role ->
+                    val destination = if (role == "client") Routes.CLIENT_HOME else Routes.FREELANCER_HOME
+                    navController.navigate(destination) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                }
+            )
+        }
+        composable(Routes.LOGIN) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Routes.SPLASH) { popUpTo(0) { inclusive = true } }
+                },
+                onNavigateToSignUp = { navController.navigate(Routes.SIGNUP) }
+            )
+        }
+        composable(Routes.SIGNUP) {
+            SignUpScreen(
+                onSignUpSuccess = {
+                    navController.navigate(Routes.ROLE_SELECT) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                },
+                onNavigateToLogin = { navController.popBackStack() }
+            )
+        }
         composable(Routes.ROLE_SELECT) {
             RoleSelectScreen(
                 onFreelancerSelected = { navController.navigate(Routes.EXPERIENCE_LEVEL) },
@@ -176,32 +200,8 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
         composable(Routes.PROFILE_SETTINGS) { PlaceholderScreen("Profile Settings") }
         composable(Routes.NOTIFICATIONS) { PlaceholderScreen("Notifications") }
         composable(Routes.RATING) { PlaceholderScreen("Rating") }
-        composable(Routes.SPLASH) {
-            SplashScreen(
-                onNavigateToLogin = {
-                    navController.navigate(Routes.LOGIN) { popUpTo(Routes.SPLASH) { inclusive = true } }
-                },
-                onNavigateToDashboard = {
-                    navController.navigate(Routes.FREELANCER_HOME) { popUpTo(Routes.SPLASH) { inclusive = true } }
-                }
-            )
-        }
-        composable(Routes.LOGIN) {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(Routes.FREELANCER_HOME) { popUpTo(Routes.SPLASH) { inclusive = true } }
-                },
-                onNavigateToSignUp = { navController.navigate(Routes.SIGNUP) }
-            )
-        }
-        composable(Routes.SIGNUP) {
-            SignUpScreen(
-                onSignUpSuccess = {
-                    navController.navigate(Routes.ROLE_SELECT) { popUpTo(Routes.SPLASH) { inclusive = true } }
-                },
-                onNavigateToLogin = { navController.popBackStack() }
-            )
-        }
+
+
 
     }
 }

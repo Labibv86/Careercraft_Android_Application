@@ -1,6 +1,7 @@
 package com.example.careercraft.data.supabase
 
-import com.example.careercraft.data.models.HireFreelancerParams
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import com.example.careercraft.data.models.JobInsert
 import com.example.careercraft.data.models.JobWithApplicantCounts
 import com.example.careercraft.data.models.ProposalWithFreelancer
@@ -33,6 +34,8 @@ class ClientRepository {
     }
 
     suspend fun hireFreelancer(proposalId: String) {
-        postgrest.rpc("hire_freelancer", HireFreelancerParams(proposalId))
+        postgrest.rpc("hire_freelancer", buildJsonObject {
+            put("proposal_id_param", proposalId)
+        })
     }
 }
