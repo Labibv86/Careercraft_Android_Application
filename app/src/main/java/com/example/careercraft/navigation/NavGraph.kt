@@ -11,6 +11,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.careercraft.ui.dashboard.*
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.careercraft.ui.jobs.*
+
 
 object Routes {
     const val SPLASH = "splash"
@@ -26,6 +30,9 @@ object Routes {
     const val JOB_FEED = "job_feed"
     const val JOB_DETAIL = "job_detail/{jobId}"
     const val PROPOSAL_FORM = "proposal_form/{jobId}"
+
+    fun jobDetail(jobId: String) = "job_detail/$jobId"
+    fun proposalForm(jobId: String) = "proposal_form/$jobId"
     const val MY_PROPOSALS = "my_proposals"
     const val POST_JOB = "post_job"
     const val MY_JOBS = "my_jobs"
@@ -38,6 +45,9 @@ object Routes {
     const val PROFILE_SETTINGS = "profile_settings"
     const val NOTIFICATIONS = "notifications"
     const val RATING = "rating"
+
+
+
 }
 
 @Composable
@@ -46,6 +56,8 @@ fun PlaceholderScreen(name: String) {
         Text(name)
     }
 }
+
+
 
 @Composable
 fun CareerCraftNavGraph(navController: NavHostController = rememberNavController()) {

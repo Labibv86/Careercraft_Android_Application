@@ -11,5 +11,6 @@ data class UserProfileData(
     @SerialName("career_path") val careerPath: String? = null,
     @SerialName("rating_score") val ratingScore: Double = 0.0,
     @SerialName("total_reviews") val totalReviews: Int = 0,
-    @SerialName("profile_percent") val profilePercent: Int = 0
+    @SerialName("profile_percent") val profilePercent: Int = 0,
+    @SerialName("selected_categories") val selectedCategories: List<String>? = null
 )
