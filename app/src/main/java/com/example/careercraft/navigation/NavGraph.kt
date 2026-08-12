@@ -178,7 +178,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             )
         }
         composable(Routes.MY_PROPOSALS) {
-            MyProposalsScreen()
+            MyProposalsScreen(onOpenContract = { navController.navigate(Routes.contractDetail(it)) })
         }
         composable(Routes.POST_JOB) {
             PostJobScreen(
@@ -195,11 +195,30 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             arguments = listOf(navArgument("jobId") { type = NavType.StringType })
         ) { backStackEntry ->
             val jobId = backStackEntry.arguments?.getString("jobId") ?: return@composable
-            JobApplicantsScreen(jobId = jobId, onHired = { navController.popBackStack() })
+            JobApplicantsScreen(
+                jobId = jobId,
+                onHired = { contractId -> navController.navigate(Routes.contractDetail(contractId)) { popUpTo(Routes.CLIENT_HOME) } }
+            )
         }
-        composable(Routes.CONTRACT_DETAIL) { PlaceholderScreen("Contract Detail") }
+        composable(
+            route = Routes.CONTRACT_DETAIL,
+            arguments = listOf(navArgument("contractId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
+            ContractDetailScreen(
+                contractId = contractId,
+                onOpenChat = { navController.navigate(Routes.chat(it)) },
+                onBothCompleted = { navController.navigate(Routes.RATING) }
+            )
+        }
         composable(Routes.CHAT_LIST) { PlaceholderScreen("Chat List") }
-        composable(Routes.CHAT) { PlaceholderScreen("Chat") }
+        composable(
+            route = Routes.CHAT,
+            arguments = listOf(navArgument("contractId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
+            ChatScreen(contractId = contractId)
+        }
         composable(Routes.PORTFOLIO_GRID) { PlaceholderScreen("Portfolio Grid") }
         composable(Routes.PORTFOLIO_FORM) { PlaceholderScreen("Portfolio Form") }
         composable(Routes.PROFILE_SETTINGS) { PlaceholderScreen("Profile Settings") }

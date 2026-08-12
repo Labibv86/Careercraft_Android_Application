@@ -1,9 +1,11 @@
 package com.example.careercraft.data.supabase
 
+import com.example.careercraft.data.models.ReviewInsert
 import com.example.careercraft.data.models.ChatMessage
-import com.example.careercraft.data.models.CompleteContractParams
 import com.example.careercraft.data.models.Contract
 import com.example.careercraft.data.models.MessageInsert
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
 
@@ -29,11 +31,19 @@ class ContractRepository {
         postgrest.from("messages").insert(MessageInsert(contractId, senderId, receiverId, content))
     }
 
+    suspend fun submitReview(contractId: String, reviewerId: String, revieweeId: String, rating: Int, feedback: String?) {
+        postgrest.from("reviews").insert(
+            ReviewInsert(contractId, reviewerId, revieweeId, rating, feedback?.ifBlank { null })
+        )
+    }
+
     suspend fun markComplete(contractId: String, isFreelancer: Boolean) {
         val field = if (isFreelancer) "freelancer_completed" else "client_completed"
         postgrest.from("contracts").update(mapOf(field to true)) {
             filter { eq("contract_id", contractId) }
         }
-        postgrest.rpc("complete_contract", CompleteContractParams(contractId))
+        postgrest.rpc("complete_contract", buildJsonObject {
+            put("contract_id_param", contractId)
+        })
     }
 }

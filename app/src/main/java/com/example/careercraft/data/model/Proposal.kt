@@ -13,6 +13,6 @@ data class ProposalWithJob(
     @SerialName("proposed_rate") val proposedRate: Double,
     @SerialName("estimated_timeline") val estimatedTimeline: String,
     val status: String,
-    val jobs: JobTitleOnly
+    val jobs: JobTitleOnly,
     val contracts: List<ContractRef> = emptyList()
 )

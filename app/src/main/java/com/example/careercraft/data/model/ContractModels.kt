@@ -38,5 +38,14 @@ data class MessageInsert(
 @Serializable
 data class CompleteContractParams(@SerialName("contract_id_param") val contractId: String)
 
+
+@Serializable
+data class ReviewInsert(
+    @SerialName("contract_id") val contractId: String,
+    @SerialName("reviewer_id") val reviewerId: String,
+    @SerialName("reviewee_id") val revieweeId: String,
+    val rating: Int,
+    val feedback: String? = null
+)
 @Serializable
 data class ContractRef(@SerialName("contract_id") val contractId: String)
