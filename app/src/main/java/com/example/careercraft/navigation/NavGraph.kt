@@ -36,7 +36,8 @@ object Routes {
     const val MY_PROPOSALS = "my_proposals"
     const val POST_JOB = "post_job"
     const val MY_JOBS = "my_jobs"
-    const val JOB_APPLICANTS = "job_applicants"
+    const val JOB_APPLICANTS = "job_applicants/{jobId}"
+    fun jobApplicants(jobId: String) = "job_applicants/$jobId"
     const val CONTRACT_DETAIL = "contract_detail"
     const val CHAT_LIST = "chat_list"
     const val CHAT = "chat"
@@ -56,6 +57,7 @@ fun PlaceholderScreen(name: String) {
         Text(name)
     }
 }
+
 
 
 
@@ -114,7 +116,16 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 }
             )
         }
-        composable(Routes.CLIENT_HOME) { PlaceholderScreen("Client Home") }
+        composable(Routes.CLIENT_HOME) {
+            ClientHomeScreen(
+                onPostJob = { navController.navigate(Routes.POST_JOB) },
+                onMyJobs = { navController.navigate(Routes.MY_JOBS) },
+                onMessages = { navController.navigate(Routes.CHAT_LIST) },
+                onSignedOut = {
+                    navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } }
+                }
+            )
+        }
         composable(Routes.JOB_FEED) {
             JobFeedScreen(onJobClick = { jobId -> navController.navigate(Routes.jobDetail(jobId)) })
         }
