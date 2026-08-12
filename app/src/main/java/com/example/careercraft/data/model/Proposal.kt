@@ -14,4 +14,5 @@ data class ProposalWithJob(
     @SerialName("estimated_timeline") val estimatedTimeline: String,
     val status: String,
     val jobs: JobTitleOnly
+    val contracts: List<ContractRef> = emptyList()
 )

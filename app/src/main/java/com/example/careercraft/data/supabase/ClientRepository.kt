@@ -33,9 +33,9 @@ class ClientRepository {
             .decodeList()
     }
 
-    suspend fun hireFreelancer(proposalId: String) {
-        postgrest.rpc("hire_freelancer", buildJsonObject {
-            put("proposal_id_param", proposalId)
-        })
+    suspend fun hireFreelancer(proposalId: String): String {
+        return postgrest.rpc("hire_freelancer", HireFreelancerParams(proposalId)).decodeAs()
     }
+
+
 }

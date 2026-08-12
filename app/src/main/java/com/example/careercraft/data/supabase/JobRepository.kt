@@ -38,7 +38,7 @@ class JobRepository {
 
     suspend fun getMyProposals(freelancerId: String): List<ProposalWithJob> {
         return postgrest.from("proposals")
-            .select(Columns.raw("proposal_id, job_id, proposed_rate, estimated_timeline, status, jobs(title)")) {
+            .select(Columns.raw("proposal_id, job_id, proposed_rate, estimated_timeline, status, jobs(title), contracts(contract_id)")) {
                 filter { eq("freelancer_id", freelancerId) }
                 order("created_at", Order.DESCENDING)
             }
@@ -52,4 +52,6 @@ class JobRepository {
             filter { eq("proposal_id", proposalId) }
         }
     }
+
+
 }
