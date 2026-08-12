@@ -1,5 +1,7 @@
 package com.example.careercraft.data.supabase
 
+import com.example.careercraft.data.models.ProposalWithJob
+import io.github.jan.supabase.postgrest.query.Columns
 import com.example.careercraft.data.models.Job
 import com.example.careercraft.data.models.ProposalInsert
 import io.github.jan.supabase.postgrest.postgrest
@@ -32,5 +34,22 @@ class JobRepository {
         postgrest.from("proposals").insert(
             ProposalInsert(jobId, freelancerId, coverLetter, proposedRate, estimatedTimeline)
         )
+    }
+
+    suspend fun getMyProposals(freelancerId: String): List<ProposalWithJob> {
+        return postgrest.from("proposals")
+            .select(Columns.raw("proposal_id, job_id, proposed_rate, estimated_timeline, status, jobs(title)")) {
+                filter { eq("freelancer_id", freelancerId) }
+                order("created_at", Order.DESCENDING)
+            }
+            .decodeList()
+    }
+
+    suspend fun withdrawProposal(proposalId: String) {
+        postgrest.from("proposals").update(
+            mapOf("status" to "withdrawn")
+        ) {
+            filter { eq("proposal_id", proposalId) }
+        }
     }
 }
