@@ -14,7 +14,7 @@ import com.example.careercraft.ui.dashboard.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.careercraft.ui.jobs.*
-
+import com.example.careercraft.ui.client.*
 
 object Routes {
     const val SPLASH = "splash"
@@ -161,7 +161,13 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
         composable(Routes.MY_JOBS) {
             MyJobsScreen(onJobClick = { jobId -> navController.navigate(Routes.jobApplicants(jobId)) })
         }
-        composable(Routes.JOB_APPLICANTS) { PlaceholderScreen("Job Applicants") }
+        composable(
+            route = Routes.JOB_APPLICANTS,
+            arguments = listOf(navArgument("jobId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobId = backStackEntry.arguments?.getString("jobId") ?: return@composable
+            JobApplicantsScreen(jobId = jobId, onHired = { navController.popBackStack() })
+        }
         composable(Routes.CONTRACT_DETAIL) { PlaceholderScreen("Contract Detail") }
         composable(Routes.CHAT_LIST) { PlaceholderScreen("Chat List") }
         composable(Routes.CHAT) { PlaceholderScreen("Chat") }
