@@ -125,7 +125,18 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             val jobId = backStackEntry.arguments?.getString("jobId") ?: return@composable
             JobDetailScreen(jobId = jobId, onApply = { navController.navigate(Routes.proposalForm(it)) })
         }
-        composable(Routes.PROPOSAL_FORM) { PlaceholderScreen("Proposal Form") }
+        composable(
+            route = Routes.PROPOSAL_FORM,
+            arguments = listOf(navArgument("jobId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobId = backStackEntry.arguments?.getString("jobId") ?: return@composable
+            ProposalFormScreen(
+                jobId = jobId,
+                onSubmitted = {
+                    navController.navigate(Routes.FREELANCER_HOME) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                }
+            )
+        }
         composable(Routes.MY_PROPOSALS) { PlaceholderScreen("My Proposals") }
         composable(Routes.POST_JOB) { PlaceholderScreen("Post Job") }
         composable(Routes.MY_JOBS) { PlaceholderScreen("My Jobs") }
