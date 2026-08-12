@@ -3,6 +3,8 @@ import com.example.careercraft.data.models.CategorySelectionUpdate
 import com.example.careercraft.data.models.UserProfileInsert
 import io.github.jan.supabase.postgrest.postgrest
 import com.example.careercraft.data.models.CareerMatchUpdate
+import com.example.careercraft.data.models.UserProfileData
+
 class UserRepository {
     private val postgrest = SupabaseClient.client.postgrest
 
@@ -25,5 +27,12 @@ class UserRepository {
         ) {
             filter { eq("user_id", userId) }
         }
+    }
+    suspend fun getProfile(userId: String): UserProfileData {
+        return postgrest.from("users")
+            .select {
+                filter { eq("user_id", userId) }
+            }
+            .decodeSingle()
     }
 }

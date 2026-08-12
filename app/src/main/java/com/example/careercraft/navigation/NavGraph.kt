@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.careercraft.ui.dashboard.*
 
 object Routes {
     const val SPLASH = "splash"
@@ -90,7 +91,17 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 }
             )
         }
-        composable(Routes.FREELANCER_HOME) { PlaceholderScreen("Freelancer Home") }
+        composable(Routes.FREELANCER_HOME) {
+            FreelancerHomeScreen(
+                onFindJobs = { navController.navigate(Routes.JOB_FEED) },
+                onPortfolio = { navController.navigate(Routes.PORTFOLIO_GRID) },
+                onMessages = { navController.navigate(Routes.CHAT_LIST) },
+                onProposals = { navController.navigate(Routes.MY_PROPOSALS) },
+                onSignedOut = {
+                    navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } }
+                }
+            )
+        }
         composable(Routes.CLIENT_HOME) { PlaceholderScreen("Client Home") }
         composable(Routes.JOB_FEED) { PlaceholderScreen("Job Feed") }
         composable(Routes.JOB_DETAIL) { PlaceholderScreen("Job Detail") }

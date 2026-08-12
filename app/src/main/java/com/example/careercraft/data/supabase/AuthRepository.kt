@@ -25,6 +25,10 @@ class AuthRepository {
         }
     }
 
+    suspend fun signOut() {
+        auth.signOut()
+    }
+
     fun currentUserId(): String? = auth.currentUserOrNull()?.id
 
     fun currentUserEmail(): String? = auth.currentUserOrNull()?.email
