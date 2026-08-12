@@ -26,10 +26,8 @@ fun SplashScreen(
         }
         try {
             val profile = UserRepository().getProfile(userId)
-            android.util.Log.d("CareerCraftDebug", "Splash resolved userId=$userId role='${profile.role}'")
             onNavigateToDashboard(profile.role)
         } catch (e: Exception) {
-            android.util.Log.d("CareerCraftDebug", "Splash profile lookup failed: ${e.message}")
             onNavigateToLogin()
         }
     }
