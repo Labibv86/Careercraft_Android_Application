@@ -24,7 +24,7 @@ object Routes {
     const val FREELANCER_HOME = "freelancer_home"
     const val CLIENT_HOME = "client_home"
     const val JOB_FEED = "job_feed"
-    const val JOB_DETAIL = "job_detail"
+    const val JOB_DETAIL = "job_detail/{jobId}"
     const val PROPOSAL_FORM = "proposal_form"
     const val MY_PROPOSALS = "my_proposals"
     const val POST_JOB = "post_job"
