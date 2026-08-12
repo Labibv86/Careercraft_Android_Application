@@ -70,9 +70,19 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 }
             )
         }
-        composable(Routes.SKILL_ASSESSMENT) { PlaceholderScreen("Skill Assessment") }
+        composable(Routes.SKILL_ASSESSMENT) {
+            SkillAssessmentScreen(
+                onFinished = { navController.navigate(Routes.CAREER_MATCH) }
+            )
+        }
         composable(Routes.CAREER_MATCH) { PlaceholderScreen("Career Match") }
-        composable(Routes.CATEGORY_PICKER) { PlaceholderScreen("Category Picker") }
+        composable(Routes.CATEGORY_PICKER) {
+            CategoryPickerScreen(
+                onCategoriesSaved = {
+                    navController.navigate(Routes.FREELANCER_HOME) { popUpTo(Routes.SPLASH) { inclusive = true } }
+                }
+            )
+        }
         composable(Routes.FREELANCER_HOME) { PlaceholderScreen("Freelancer Home") }
         composable(Routes.CLIENT_HOME) { PlaceholderScreen("Client Home") }
         composable(Routes.JOB_FEED) { PlaceholderScreen("Job Feed") }

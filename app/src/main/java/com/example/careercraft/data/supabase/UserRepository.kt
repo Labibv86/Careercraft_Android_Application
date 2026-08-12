@@ -2,7 +2,7 @@ package com.example.careercraft.data.supabase
 import com.example.careercraft.data.models.CategorySelectionUpdate
 import com.example.careercraft.data.models.UserProfileInsert
 import io.github.jan.supabase.postgrest.postgrest
-
+import com.example.careercraft.data.models.CareerMatchUpdate
 class UserRepository {
     private val postgrest = SupabaseClient.client.postgrest
 
@@ -14,6 +14,14 @@ class UserRepository {
     suspend fun updateCategories(userId: String, categories: List<String>) {
         postgrest.from("users").update(
             CategorySelectionUpdate(selectedCategories = categories)
+        ) {
+            filter { eq("user_id", userId) }
+        }
+    }
+
+    suspend fun saveCareerMatch(userId: String, predictedClass: Int, careerPath: String) {
+        postgrest.from("users").update(
+            CareerMatchUpdate(predictedClass = predictedClass, careerPath = careerPath)
         ) {
             filter { eq("user_id", userId) }
         }
