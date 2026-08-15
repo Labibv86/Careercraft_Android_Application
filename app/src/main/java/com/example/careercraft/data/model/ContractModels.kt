@@ -47,5 +47,19 @@ data class ReviewInsert(
     val rating: Int,
     val feedback: String? = null
 )
+
+@Serializable
+data class ContractSummary(
+    @SerialName("contract_id") val contractId: String,
+    @SerialName("job_id") val jobId: String,
+    @SerialName("job_title") val jobTitle: String,
+    @SerialName("freelancer_id") val freelancerId: String,
+    @SerialName("freelancer_name") val freelancerName: String,
+    @SerialName("client_id") val clientId: String,
+    @SerialName("client_name") val clientName: String,
+    val status: String
+)
+
+
 @Serializable
 data class ContractRef(@SerialName("contract_id") val contractId: String)

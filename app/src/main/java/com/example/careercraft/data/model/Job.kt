@@ -16,7 +16,8 @@ data class Job(
     val duration: String,
     @SerialName("location_type") val locationType: String,
     val location: String? = null,
-    val status: String
+    val status: String,
+    val deadline: String? = null
 )
 
 @Serializable

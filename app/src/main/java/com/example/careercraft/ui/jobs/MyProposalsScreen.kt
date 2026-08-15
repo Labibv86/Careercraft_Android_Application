@@ -25,6 +25,8 @@ fun MyProposalsScreen(onOpenContract: (String) -> Unit, viewModel: MyProposalsVi
     var selectedTab by remember { mutableStateOf("Pending") }
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) { viewModel.refresh() }
+
     Column(modifier = Modifier.fillMaxSize().background(White)) {
         Text(
             "My Proposals",
@@ -80,7 +82,7 @@ fun MyProposalsScreen(onOpenContract: (String) -> Unit, viewModel: MyProposalsVi
                                     color = Grey,
                                     style = MaterialTheme.typography.bodyMedium
                                 )
-                                if (proposal.status == "pending") {
+                                if (proposal.status == "pending" && proposal.contracts.isEmpty()) {
                                     Spacer(Modifier.height(8.dp))
                                     TextButton(
                                         onClick = { viewModel.withdraw(proposal.proposalId) },

@@ -8,6 +8,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
+import com.example.careercraft.data.models.ContractSummary
 
 class ContractRepository {
     private val postgrest = SupabaseClient.client.postgrest
@@ -37,6 +38,34 @@ class ContractRepository {
         )
     }
 
+    suspend fun getMyContracts(userId: String): List<ContractSummary> {
+        val asFreelancer = postgrest.from("active_contracts")
+            .select { filter { eq("freelancer_id", userId) } }
+            .decodeList<ContractSummary>()
+        val asClient = postgrest.from("active_contracts")
+            .select { filter { eq("client_id", userId) } }
+            .decodeList<ContractSummary>()
+        return asFreelancer + asClient
+    }
+
+    suspend fun getLastMessage(contractId: String): ChatMessage? {
+        return postgrest.from("messages")
+            .select {
+                filter { eq("contract_id", contractId) }
+                order("created_at", Order.DESCENDING)
+                limit(1)
+            }
+            .decodeList<ChatMessage>()
+            .firstOrNull()
+    }
+
+    suspend fun getContractIdForJob(jobId: String): String? {
+        return postgrest.from("contracts")
+            .select { filter { eq("job_id", jobId) } }
+            .decodeList<Contract>()
+            .firstOrNull()?.contractId
+    }
+
     suspend fun markComplete(contractId: String, isFreelancer: Boolean) {
         val field = if (isFreelancer) "freelancer_completed" else "client_completed"
         postgrest.from("contracts").update(mapOf(field to true)) {
@@ -45,5 +74,11 @@ class ContractRepository {
         postgrest.rpc("complete_contract", buildJsonObject {
             put("contract_id_param", contractId)
         })
+    }
+
+    suspend fun getContractsForFreelancer(freelancerId: String): List<Contract> {
+        return postgrest.from("contracts")
+            .select { filter { eq("freelancer_id", freelancerId) } }
+            .decodeList()
     }
 }

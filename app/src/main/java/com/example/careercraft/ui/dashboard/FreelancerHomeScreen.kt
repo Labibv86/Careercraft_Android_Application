@@ -18,6 +18,7 @@ import com.example.careercraft.ui.theme.White
 @Composable
 fun FreelancerHomeScreen(
     onFindJobs: () -> Unit,
+    onMyJobs: () -> Unit,
     onPortfolio: () -> Unit,
     onMessages: () -> Unit,
     onProposals: () -> Unit,
@@ -69,6 +70,13 @@ fun FreelancerHomeScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
                     ) { Text("\uD83D\uDD0D FIND JOBS") }
                     Spacer(Modifier.height(10.dp))
+
+                    Spacer(Modifier.height(10.dp))
+                    Button(
+                        onClick = onMyJobs,
+                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
+                    ) { Text("\uD83D\uDCC1 MY JOBS") }
                     Button(
                         onClick = onPortfolio,
                         modifier = Modifier.fillMaxWidth().height(48.dp),

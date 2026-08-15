@@ -18,11 +18,14 @@ sealed class MyJobsUiState {
 
 class MyJobsViewModel(
     private val clientRepository: ClientRepository = ClientRepository(),
+    private val contractRepository: com.example.careercraft.data.supabase.ContractRepository = com.example.careercraft.data.supabase.ContractRepository(),
     private val authRepository: AuthRepository = AuthRepository()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<MyJobsUiState>(MyJobsUiState.Loading)
     val uiState: StateFlow<MyJobsUiState> = _uiState.asStateFlow()
+
+    suspend fun resolveContractId(jobId: String): String? = contractRepository.getContractIdForJob(jobId)
 
     init {
         val clientId = authRepository.currentUserId()

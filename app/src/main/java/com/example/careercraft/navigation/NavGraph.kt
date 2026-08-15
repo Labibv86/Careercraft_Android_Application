@@ -16,6 +16,7 @@ import androidx.navigation.navArgument
 import com.example.careercraft.ui.jobs.*
 import com.example.careercraft.ui.client.*
 import com.example.careercraft.ui.contracts.*
+import com.example.careercraft.ui.portfolio.*
 
 
 object Routes {
@@ -28,6 +29,8 @@ object Routes {
     const val CAREER_MATCH = "career_match"
     const val CATEGORY_PICKER = "category_picker"
     const val FREELANCER_HOME = "freelancer_home"
+
+    const val FREELANCER_JOBS = "freelancer_jobs"
     const val CLIENT_HOME = "client_home"
     const val JOB_FEED = "job_feed"
     const val JOB_DETAIL = "job_detail/{jobId}"
@@ -138,6 +141,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
         composable(Routes.FREELANCER_HOME) {
             FreelancerHomeScreen(
                 onFindJobs = { navController.navigate(Routes.JOB_FEED) },
+                onMyJobs = { navController.navigate(Routes.FREELANCER_JOBS) },
                 onPortfolio = { navController.navigate(Routes.PORTFOLIO_GRID) },
                 onMessages = { navController.navigate(Routes.CHAT_LIST) },
                 onProposals = { navController.navigate(Routes.MY_PROPOSALS) },
@@ -189,7 +193,10 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             )
         }
         composable(Routes.MY_JOBS) {
-            MyJobsScreen(onJobClick = { jobId -> navController.navigate(Routes.jobApplicants(jobId)) })
+            MyJobsScreen(
+                onViewApplicants = { jobId -> navController.navigate(Routes.jobApplicants(jobId)) },
+                onViewContract = { contractId -> navController.navigate(Routes.contractDetail(contractId)) }
+            )
         }
         composable(
             route = Routes.JOB_APPLICANTS,
@@ -209,10 +216,12 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             ContractDetailScreen(
                 contractId = contractId,
                 onOpenChat = { navController.navigate(Routes.chat(it)) },
-                onBothCompleted = { navController.navigate(Routes.RATING) }
+                onBothCompleted = { navController.navigate(Routes.rating(contractId)) }
             )
         }
-        composable(Routes.CHAT_LIST) { PlaceholderScreen("Chat List") }
+        composable(Routes.CHAT_LIST) {
+            ChatListScreen(onChatClick = { contractId -> navController.navigate(Routes.chat(contractId)) })
+        }
         composable(
             route = Routes.CHAT,
             arguments = listOf(navArgument("contractId") { type = NavType.StringType })
@@ -220,8 +229,16 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
             ChatScreen(contractId = contractId)
         }
-        composable(Routes.PORTFOLIO_GRID) { PlaceholderScreen("Portfolio Grid") }
-        composable(Routes.PORTFOLIO_FORM) { PlaceholderScreen("Portfolio Form") }
+
+        composable(Routes.FREELANCER_JOBS) {
+            FreelancerJobsScreen(onJobClick = { navController.navigate(Routes.contractDetail(it)) })
+        }
+        composable(Routes.PORTFOLIO_GRID) {
+            PortfolioGridScreen(onAddNew = { navController.navigate(Routes.PORTFOLIO_FORM) })
+        }
+        composable(Routes.PORTFOLIO_FORM) {
+            PortfolioFormScreen(onSaved = { navController.popBackStack() })
+        }
         composable(Routes.PROFILE_SETTINGS) { PlaceholderScreen("Profile Settings") }
         composable(Routes.NOTIFICATIONS) { PlaceholderScreen("Notifications") }
         composable(

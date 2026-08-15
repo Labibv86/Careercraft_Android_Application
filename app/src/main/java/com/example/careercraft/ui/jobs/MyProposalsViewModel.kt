@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
 sealed class MyProposalsUiState {
     data object Loading : MyProposalsUiState()
     data class Ready(val proposals: List<ProposalWithJob>) : MyProposalsUiState()
@@ -23,10 +24,11 @@ class MyProposalsViewModel(
 
     private val _uiState = MutableStateFlow<MyProposalsUiState>(MyProposalsUiState.Loading)
     val uiState: StateFlow<MyProposalsUiState> = _uiState.asStateFlow()
+    fun refresh() = load()
 
     init { load() }
 
-    private fun load() {
+    fun load() {
         val freelancerId = authRepository.currentUserId()
         if (freelancerId == null) {
             _uiState.value = MyProposalsUiState.Error("Session expired. Please log in again.")

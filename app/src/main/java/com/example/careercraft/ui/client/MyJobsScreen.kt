@@ -15,13 +15,16 @@ import com.example.careercraft.ui.common.DashboardCard
 import com.example.careercraft.ui.theme.Black
 import com.example.careercraft.ui.theme.Red
 import com.example.careercraft.ui.theme.White
+import kotlinx.coroutines.launch
 
 @Composable
 fun MyJobsScreen(
-    onJobClick: (String) -> Unit,
+    onViewApplicants: (String) -> Unit,
+    onViewContract: (String) -> Unit,
     viewModel: MyJobsViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {
         when (val state = uiState) {
@@ -43,7 +46,15 @@ fun MyJobsScreen(
                             DashboardCard(
                                 title = job.title,
                                 subtitle = "${job.totalApplicants} applicant(s) \u00B7 ${job.status}",
-                                modifier = Modifier.clickable { onJobClick(job.jobId) }
+                                modifier = Modifier.clickable {
+                                    if (job.status == "open") {
+                                        onViewApplicants(job.jobId)
+                                    } else {
+                                        scope.launch {
+                                            viewModel.resolveContractId(job.jobId)?.let { onViewContract(it) }
+                                        }
+                                    }
+                                }
                             )
                         }
                     }
