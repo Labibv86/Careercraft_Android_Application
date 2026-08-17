@@ -42,8 +42,9 @@ fun SignUpScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Create Account", style = MaterialTheme.typography.titleLarge, color = Black)
-        Spacer(Modifier.height(24.dp))
+        Text("CareerCraft", style = MaterialTheme.typography.titleLarge, color = Black)
+        Spacer(Modifier.height(4.dp))
+        Text("Create Account", style = MaterialTheme.typography.titleMedium, color = Grey)
 
         OutlinedTextField(
             value = fullName,

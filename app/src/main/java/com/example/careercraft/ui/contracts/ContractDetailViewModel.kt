@@ -25,7 +25,8 @@ data class ContractDetailData(
 sealed class ContractDetailUiState {
     data object Loading : ContractDetailUiState()
     data class Ready(val data: ContractDetailData) : ContractDetailUiState()
-    data object BothCompleted : ContractDetailUiState()
+    data class NeedsRating(val contractId: String) : ContractDetailUiState()
+    data class ShowHistory(val contractId: String) : ContractDetailUiState()
     data class Error(val message: String) : ContractDetailUiState()
 }
 
@@ -51,19 +52,26 @@ class ContractDetailViewModel(
         viewModelScope.launch {
             try {
                 val contract = contractRepository.getContract(contractId)
+
+                if (contract.status == "completed") {
+                    val alreadyReviewed = contractRepository.hasReviewed(contractId, myId)
+                    _uiState.value = if (alreadyReviewed) {
+                        ContractDetailUiState.ShowHistory(contractId)
+                    } else {
+                        ContractDetailUiState.NeedsRating(contractId)
+                    }
+                    return@launch
+                }
+
                 val job = jobRepository.getJob(contract.jobId)
                 val isFreelancer = myId == contract.freelancerId
                 val otherPartyId = if (isFreelancer) contract.clientId else contract.freelancerId
                 val otherParty = userRepository.getProfile(otherPartyId)
                 val myPartComplete = if (isFreelancer) contract.freelancerCompleted else contract.clientCompleted
 
-                _uiState.value = if (contract.status == "completed") {
-                    ContractDetailUiState.BothCompleted
-                } else {
-                    ContractDetailUiState.Ready(
-                        ContractDetailData(contract, job.title, otherParty.displayName, otherParty.ratingScore, isFreelancer, myPartComplete)
-                    )
-                }
+                _uiState.value = ContractDetailUiState.Ready(
+                    ContractDetailData(contract, job.title, otherParty.displayName, otherParty.ratingScore, isFreelancer, myPartComplete)
+                )
             } catch (e: Exception) {
                 _uiState.value = ContractDetailUiState.Error(e.message ?: "Could not load contract.")
             }

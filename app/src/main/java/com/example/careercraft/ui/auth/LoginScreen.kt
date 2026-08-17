@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.careercraft.ui.theme.*
@@ -35,10 +36,13 @@ fun LoginScreen(
             .fillMaxSize()
             .background(White)
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+
     ) {
-        Text("Log In", style = MaterialTheme.typography.titleLarge, color = Black)
-        Spacer(Modifier.height(24.dp))
+        Text("CAREERCRAFT", style = MaterialTheme.typography.titleLarge, color = Black, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(10.dp))
 
         OutlinedTextField(
             value = email,

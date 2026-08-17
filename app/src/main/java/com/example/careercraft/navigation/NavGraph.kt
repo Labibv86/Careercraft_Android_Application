@@ -17,6 +17,7 @@ import com.example.careercraft.ui.jobs.*
 import com.example.careercraft.ui.client.*
 import com.example.careercraft.ui.contracts.*
 import com.example.careercraft.ui.portfolio.*
+import com.example.careercraft.ui.profile.*
 
 
 object Routes {
@@ -55,6 +56,11 @@ object Routes {
     const val NOTIFICATIONS = "notifications"
     const val RATING = "rating/{contractId}"
     fun rating(contractId: String) = "rating/$contractId"
+
+    const val HISTORY = "history/{contractId}"
+    const val PUBLIC_PROFILE = "public_profile/{userId}"
+    fun history(contractId: String) = "history/$contractId"
+    fun publicProfile(userId: String) = "public_profile/$userId"
 
 
 
@@ -216,7 +222,8 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             ContractDetailScreen(
                 contractId = contractId,
                 onOpenChat = { navController.navigate(Routes.chat(it)) },
-                onBothCompleted = { navController.navigate(Routes.rating(contractId)) }
+                onNeedsRating = { id -> navController.navigate(Routes.rating(id)) { popUpTo(Routes.contractDetail(id)) { inclusive = true } } },
+                onShowHistory = { id -> navController.navigate(Routes.history(id)) { popUpTo(Routes.contractDetail(id)) { inclusive = true } } }
             )
         }
         composable(Routes.CHAT_LIST) {
@@ -250,6 +257,22 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 contractId = contractId,
                 onDone = { navController.navigate(Routes.SPLASH) { popUpTo(0) { inclusive = true } } }
             )
+        }
+
+        composable(
+            route = Routes.HISTORY,
+            arguments = listOf(navArgument("contractId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
+            HistoryScreen(contractId = contractId, onViewProfile = { userId -> navController.navigate(Routes.publicProfile(userId)) })
+        }
+
+        composable(
+            route = Routes.PUBLIC_PROFILE,
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
+            PublicProfileScreen(userId = userId)
         }
 
 

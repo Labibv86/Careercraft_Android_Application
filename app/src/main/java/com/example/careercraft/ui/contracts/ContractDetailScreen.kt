@@ -14,18 +14,23 @@ import com.example.careercraft.ui.theme.*
 fun ContractDetailScreen(
     contractId: String,
     onOpenChat: (String) -> Unit,
-    onBothCompleted: () -> Unit,
+    onNeedsRating: (String) -> Unit,
+    onShowHistory: (String) -> Unit,
     viewModel: ContractDetailViewModel = viewModel(factory = ContractDetailViewModelFactory(contractId))
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState) {
-        if (uiState is ContractDetailUiState.BothCompleted) onBothCompleted()
+        when (val state = uiState) {
+            is ContractDetailUiState.NeedsRating -> onNeedsRating(state.contractId)
+            is ContractDetailUiState.ShowHistory -> onShowHistory(state.contractId)
+            else -> {}
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {
         when (val state = uiState) {
-            is ContractDetailUiState.Loading, is ContractDetailUiState.BothCompleted ->
+            is ContractDetailUiState.Loading, is ContractDetailUiState.NeedsRating, is ContractDetailUiState.ShowHistory ->
                 CircularProgressIndicator(color = Black, modifier = Modifier.align(Alignment.Center))
             is ContractDetailUiState.Error -> Text(state.message, color = Red, modifier = Modifier.align(Alignment.Center).padding(24.dp))
             is ContractDetailUiState.Ready -> {

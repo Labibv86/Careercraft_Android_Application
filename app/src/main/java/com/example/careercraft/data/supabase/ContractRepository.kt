@@ -9,6 +9,8 @@ import kotlinx.serialization.json.put
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
 import com.example.careercraft.data.models.ContractSummary
+import com.example.careercraft.data.models.ProposalDetails
+import com.example.careercraft.data.models.ReviewRecord
 
 class ContractRepository {
     private val postgrest = SupabaseClient.client.postgrest
@@ -80,5 +82,30 @@ class ContractRepository {
         return postgrest.from("contracts")
             .select { filter { eq("freelancer_id", freelancerId) } }
             .decodeList()
+    }
+
+
+    suspend fun getProposal(proposalId: String): ProposalDetails {
+        return postgrest.from("proposals")
+            .select { filter { eq("proposal_id", proposalId) } }
+            .decodeSingle()
+    }
+
+    suspend fun getReviews(contractId: String): List<ReviewRecord> {
+        return postgrest.from("reviews")
+            .select { filter { eq("contract_id", contractId) } }
+            .decodeList()
+    }
+
+    suspend fun hasReviewed(contractId: String, reviewerId: String): Boolean {
+        val existing = postgrest.from("reviews")
+            .select {
+                filter {
+                    eq("contract_id", contractId)
+                    eq("reviewer_id", reviewerId)
+                }
+            }
+            .decodeList<ReviewRecord>()
+        return existing.isNotEmpty()
     }
 }

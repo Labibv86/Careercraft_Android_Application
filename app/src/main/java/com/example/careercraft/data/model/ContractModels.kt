@@ -12,6 +12,7 @@ data class Contract(
     val status: String,
     val duration: String,
     @SerialName("pay_amount") val payAmount: Double,
+    @SerialName("proposal_id") val proposalId: String,
     @SerialName("freelancer_completed") val freelancerCompleted: Boolean,
     @SerialName("client_completed") val clientCompleted: Boolean,
     @SerialName("chat_active") val chatActive: Boolean
@@ -59,6 +60,26 @@ data class ContractSummary(
     @SerialName("client_name") val clientName: String,
     val status: String
 )
+
+
+@Serializable
+data class ProposalDetails(
+    @SerialName("proposal_id") val proposalId: String,
+    @SerialName("cover_letter") val coverLetter: String,
+    @SerialName("proposed_rate") val proposedRate: Double,
+    @SerialName("estimated_timeline") val estimatedTimeline: String
+)
+
+@Serializable
+data class ReviewRecord(
+    @SerialName("review_id") val reviewId: String,
+    @SerialName("contract_id") val contractId: String,
+    @SerialName("reviewer_id") val reviewerId: String,
+    @SerialName("reviewee_id") val revieweeId: String,
+    val rating: Int,
+    val feedback: String? = null
+)
+
 
 
 @Serializable
