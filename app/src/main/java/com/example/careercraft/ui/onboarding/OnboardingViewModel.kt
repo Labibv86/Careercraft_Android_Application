@@ -55,10 +55,18 @@ class OnboardingViewModel(
             _uiState.value = ProfileUiState.Error("Session expired. Please log in again.")
             return
         }
+        val displayNames = mapOf(
+            "Technology" to "Technology & Remote Work",
+            "Creative" to "Creative & Design",
+            "Physical" to "Physical & Labor",
+            "Service" to "Service & Public Facing"
+        )
+        val careerPath = categories.mapNotNull { displayNames[it] }.joinToString(", ")
+
         _uiState.value = ProfileUiState.Loading
         viewModelScope.launch {
             try {
-                userRepository.updateCategories(userId, categories)
+                userRepository.updateCategories(userId, categories, careerPath)
                 _uiState.value = ProfileUiState.Success
             } catch (e: Exception) {
                 _uiState.value = ProfileUiState.Error(e.message ?: "Could not save categories. Please try again.")

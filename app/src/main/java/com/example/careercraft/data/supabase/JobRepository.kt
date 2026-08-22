@@ -3,6 +3,7 @@ package com.example.careercraft.data.supabase
 import com.example.careercraft.data.models.ProposalWithJob
 import io.github.jan.supabase.postgrest.query.Columns
 import com.example.careercraft.data.models.Job
+import com.example.careercraft.data.models.JobIdOnly
 import com.example.careercraft.data.models.ProposalInsert
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Order
@@ -10,13 +11,14 @@ import io.github.jan.supabase.postgrest.query.Order
 class JobRepository {
     private val postgrest = SupabaseClient.client.postgrest
 
-    suspend fun getOpenJobs(preferredCategory: String?): List<Job> {
+    suspend fun getOpenJobs(preferredCategory: String?, excludeJobIds: Set<String> = emptySet()): List<Job> {
         val jobs = postgrest.from("jobs")
             .select {
                 filter { eq("status", "open") }
                 order("created_at", Order.DESCENDING)
             }
             .decodeList<Job>()
+            .filter { it.jobId !in excludeJobIds }
         return if (preferredCategory != null) {
             jobs.sortedByDescending { it.category.equals(preferredCategory, ignoreCase = true) }
         } else jobs
@@ -51,6 +53,15 @@ class JobRepository {
         ) {
             filter { eq("proposal_id", proposalId) }
         }
+    }
+    suspend fun getAppliedJobIds(freelancerId: String): Set<String> {
+        return postgrest.from("proposals")
+            .select(Columns.raw("job_id")) {
+                filter { eq("freelancer_id", freelancerId) }
+            }
+            .decodeList<JobIdOnly>()
+            .map { it.jobId }
+            .toSet()
     }
 
 

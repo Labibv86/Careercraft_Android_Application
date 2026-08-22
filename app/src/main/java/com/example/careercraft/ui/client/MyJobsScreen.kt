@@ -16,6 +16,7 @@ import com.example.careercraft.ui.theme.Black
 import com.example.careercraft.ui.theme.Red
 import com.example.careercraft.ui.theme.White
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun MyJobsScreen(
@@ -23,6 +24,8 @@ fun MyJobsScreen(
     onViewContract: (String) -> Unit,
     viewModel: MyJobsViewModel = viewModel()
 ) {
+
+    LaunchedEffect(Unit) { viewModel.refresh() }
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
 

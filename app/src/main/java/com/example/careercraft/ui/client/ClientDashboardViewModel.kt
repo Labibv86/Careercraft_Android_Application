@@ -35,7 +35,10 @@ class ClientDashboardViewModel(
 
     init { load() }
 
-    private fun load() {
+    fun refresh() = load()
+
+    fun load() {
+
         val userId = authRepository.currentUserId()
         if (userId == null) {
             _uiState.value = ClientDashboardUiState.Error("Session expired. Please log in again.")

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
 sealed class DashboardUiState {
     data object Loading : DashboardUiState()
     data class Ready(val profile: UserProfileData) : DashboardUiState()
@@ -28,7 +29,9 @@ class DashboardViewModel(
         loadProfile()
     }
 
-    private fun loadProfile() {
+    fun refresh() = loadProfile()
+
+    fun loadProfile() {
         val userId = authRepository.currentUserId()
         if (userId == null) {
             _uiState.value = DashboardUiState.Error("Session expired. Please log in again.")

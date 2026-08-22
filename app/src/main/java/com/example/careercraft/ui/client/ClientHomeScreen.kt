@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.careercraft.ui.common.DashboardCard
 import com.example.careercraft.ui.theme.*
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun ClientHomeScreen(
@@ -19,6 +20,7 @@ fun ClientHomeScreen(
     onSignedOut: () -> Unit,
     viewModel: ClientDashboardViewModel = viewModel()
 ) {
+    LaunchedEffect(Unit) { viewModel.refresh() }
     val uiState by viewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {

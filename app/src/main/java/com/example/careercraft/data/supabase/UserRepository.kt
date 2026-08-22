@@ -13,9 +13,9 @@ class UserRepository {
             UserProfileInsert(userId, email, displayName, role, userType)
         )
     }
-    suspend fun updateCategories(userId: String, categories: List<String>) {
+    suspend fun updateCategories(userId: String, categories: List<String>, careerPath: String) {
         postgrest.from("users").update(
-            CategorySelectionUpdate(selectedCategories = categories)
+            CategorySelectionUpdate(selectedCategories = categories, careerPath = careerPath)
         ) {
             filter { eq("user_id", userId) }
         }

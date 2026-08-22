@@ -19,7 +19,8 @@ data class Job(
     val status: String,
     val deadline: String? = null
 )
-
+@Serializable
+data class JobIdOnly(@SerialName("job_id") val jobId: String)
 @Serializable
 data class ProposalInsert(
     @SerialName("job_id") val jobId: String,

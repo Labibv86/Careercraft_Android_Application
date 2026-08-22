@@ -34,7 +34,8 @@ class JobFeedViewModel(
                     val profile = userRepository.getProfile(it)
                     profile.careerPath?.substringBefore(" ") ?: profile.selectedCategories?.firstOrNull()
                 }
-                _uiState.value = JobFeedUiState.Ready(jobRepository.getOpenJobs(preferredCategory))
+                val appliedJobIds = userId?.let { jobRepository.getAppliedJobIds(it) } ?: emptySet()
+                _uiState.value = JobFeedUiState.Ready(jobRepository.getOpenJobs(preferredCategory, appliedJobIds))
             } catch (e: Exception) {
                 _uiState.value = JobFeedUiState.Error(e.message ?: "Could not load jobs.")
             }

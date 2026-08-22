@@ -14,6 +14,7 @@ import com.example.careercraft.ui.theme.DeepGrey
 import com.example.careercraft.ui.theme.LightGrey
 import com.example.careercraft.ui.theme.Red
 import com.example.careercraft.ui.theme.White
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun FreelancerHomeScreen(
@@ -25,6 +26,7 @@ fun FreelancerHomeScreen(
     onSignedOut: () -> Unit,
     viewModel: DashboardViewModel = viewModel()
 ) {
+    LaunchedEffect(Unit) { viewModel.refresh() }
     val uiState by viewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {

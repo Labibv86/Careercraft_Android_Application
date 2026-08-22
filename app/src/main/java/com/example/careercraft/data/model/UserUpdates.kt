@@ -7,7 +7,9 @@ import kotlinx.serialization.Serializable
 data class CategorySelectionUpdate(
     @SerialName("selected_categories") val selectedCategories: List<String>,
     @SerialName("profile_complete") val profileComplete: Boolean = true,
-    @SerialName("profile_percent") val profilePercent: Int = 100
+    @SerialName("profile_percent") val profilePercent: Int = 100,
+    @SerialName("career_path") val careerPath: String
+
 
 )
 @Serializable

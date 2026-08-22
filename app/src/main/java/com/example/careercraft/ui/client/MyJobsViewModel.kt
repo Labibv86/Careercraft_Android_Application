@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.careercraft.data.models.JobWithApplicantCounts
 import com.example.careercraft.data.supabase.AuthRepository
 import com.example.careercraft.data.supabase.ClientRepository
+import com.example.careercraft.data.supabase.ContractRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,27 +19,31 @@ sealed class MyJobsUiState {
 
 class MyJobsViewModel(
     private val clientRepository: ClientRepository = ClientRepository(),
-    private val contractRepository: com.example.careercraft.data.supabase.ContractRepository = com.example.careercraft.data.supabase.ContractRepository(),
+    private val contractRepository: ContractRepository = ContractRepository(),
     private val authRepository: AuthRepository = AuthRepository()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<MyJobsUiState>(MyJobsUiState.Loading)
     val uiState: StateFlow<MyJobsUiState> = _uiState.asStateFlow()
 
-    suspend fun resolveContractId(jobId: String): String? = contractRepository.getContractIdForJob(jobId)
+    init { load() }
 
-    init {
+    fun refresh() = load()
+
+    private fun load() {
         val clientId = authRepository.currentUserId()
         if (clientId == null) {
             _uiState.value = MyJobsUiState.Error("Session expired. Please log in again.")
-        } else {
-            viewModelScope.launch {
-                try {
-                    _uiState.value = MyJobsUiState.Ready(clientRepository.getMyJobs(clientId))
-                } catch (e: Exception) {
-                    _uiState.value = MyJobsUiState.Error(e.message ?: "Could not load jobs.")
-                }
+            return
+        }
+        viewModelScope.launch {
+            try {
+                _uiState.value = MyJobsUiState.Ready(clientRepository.getMyJobs(clientId))
+            } catch (e: Exception) {
+                _uiState.value = MyJobsUiState.Error(e.message ?: "Could not load jobs.")
             }
         }
     }
+
+    suspend fun resolveContractId(jobId: String): String? = contractRepository.getContractIdForJob(jobId)
 }

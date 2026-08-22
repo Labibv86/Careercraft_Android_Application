@@ -44,7 +44,12 @@ class ProposalFormViewModel(
                 jobRepository.submitProposal(jobId, freelancerId, coverLetter, rate, estimatedTimeline)
                 _uiState.value = ProposalUiState.Success
             } catch (e: Exception) {
-                _uiState.value = ProposalUiState.Error(e.message ?: "Could not submit proposal. Please try again.")
+                val message = if (e.message?.contains("duplicate key", ignoreCase = true) == true) {
+                    "You've already applied to this job."
+                } else {
+                    e.message ?: "Could not submit proposal. Please try again."
+                }
+                _uiState.value = ProposalUiState.Error(message)
             }
         }
     }
