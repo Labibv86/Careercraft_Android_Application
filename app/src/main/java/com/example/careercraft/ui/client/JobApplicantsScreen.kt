@@ -1,6 +1,7 @@
 package com.example.careercraft.ui.client
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,13 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.careercraft.ui.common.ProfilePicture
 import com.example.careercraft.ui.theme.*
+import com.example.careercraft.navigation.Routes
 
 @Composable
-
 fun JobApplicantsScreen(
     jobId: String,
     onHired: (String) -> Unit,
+    navController: NavHostController = rememberNavController(),
     viewModel: JobApplicantsViewModel = viewModel(factory = JobApplicantsViewModelFactory(jobId))
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -53,11 +58,46 @@ fun JobApplicantsScreen(
                                     .background(LightGrey)
                                     .padding(16.dp)
                             ) {
-                                Text("${proposal.users.displayName} \u2014 ${proposal.users.ratingScore}", style = MaterialTheme.typography.titleMedium, color = Black)
+                                // Freelancer info with clickable profile
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            navController.navigate(Routes.publicProfile(proposal.freelancerId))
+                                        }
+                                ) {
+                                    ProfilePicture(
+                                        photoUrl = proposal.users.photoUrl,
+                                        displayName = proposal.users.displayName,
+                                        size = 32
+                                    )
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(
+                                        proposal.users.displayName,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Black
+                                    )
+                                    Spacer(Modifier.weight(1f))
+                                    Text(
+                                        "⭐ ${proposal.users.ratingScore}",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = Black
+                                    )
+                                }
                                 Spacer(Modifier.height(4.dp))
-                                Text("\$${proposal.proposedRate.toInt()} \u00B7 ${proposal.estimatedTimeline}", color = Grey, style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    "$${proposal.proposedRate.toInt()} · ${proposal.estimatedTimeline}",
+                                    color = Grey,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                                 Spacer(Modifier.height(4.dp))
-                                Text(proposal.coverLetter, color = Black, style = MaterialTheme.typography.bodyMedium, maxLines = 3)
+                                Text(
+                                    proposal.coverLetter,
+                                    color = Black,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 3
+                                )
                                 if (proposal.status == "pending") {
                                     Spacer(Modifier.height(10.dp))
                                     Button(

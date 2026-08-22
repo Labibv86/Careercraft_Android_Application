@@ -11,14 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.careercraft.ui.common.DashboardCard
-import com.example.careercraft.ui.theme.Black
-import com.example.careercraft.ui.theme.Red
-import com.example.careercraft.ui.theme.White
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.careercraft.ui.common.ProfilePicture
+import com.example.careercraft.ui.theme.*
+import com.example.careercraft.navigation.Routes
 
 @Composable
 fun JobFeedScreen(
     onJobClick: (String) -> Unit,
+    navController: NavHostController = rememberNavController(),
     viewModel: JobFeedViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -43,12 +45,60 @@ fun JobFeedScreen(
                             Text("Smart Job Feed", style = MaterialTheme.typography.titleLarge, color = Black)
                             Spacer(Modifier.height(4.dp))
                         }
-                        items(state.jobs, key = { it.jobId }) { job ->
-                            DashboardCard(
-                                title = job.title,
-                                subtitle = "\uD83D\uDCB0 $${job.payMin.toInt()}-${job.payMax.toInt()} \u00B7 \u23F1 ${job.duration} \u00B7 \uD83D\uDCCD ${job.locationType}",
-                                modifier = Modifier.clickable { onJobClick(job.jobId) }
-                            )
+                        items(state.jobs, key = { it.job.jobId }) { jobWithClient ->
+                            val job = jobWithClient.job
+                            val client = jobWithClient.client
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(LightGrey, shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                                    .clickable { onJobClick(job.jobId) }
+                                    .padding(16.dp)
+                            ) {
+                                Text(job.title, style = MaterialTheme.typography.titleMedium, color = Black)
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    "💰 $${job.payMin.toInt()}-${job.payMax.toInt()} · ⏱ ${job.duration} · 📍 ${job.locationType}",
+                                    color = Grey,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    // View Client Profile Button with Profile Picture
+                                    TextButton(
+                                        onClick = {
+                                            navController.navigate(Routes.publicProfile(job.clientId))
+                                        },
+                                        modifier = Modifier.padding(0.dp),
+                                        contentPadding = PaddingValues(0.dp)
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                        ) {
+                                            ProfilePicture(
+                                                photoUrl = client.photoUrl,
+                                                displayName = client.displayName,
+                                                size = 24
+                                            )
+                                            Text(
+                                                client.displayName,
+                                                color = DeepGrey,
+                                                style = MaterialTheme.typography.labelMedium
+                                            )
+                                        }
+                                    }
+                                    Spacer(Modifier.weight(1f))
+                                    Text(
+                                        job.status.uppercase(),
+                                        color = if (job.status == "open") DeepGrey else Grey,
+                                        style = MaterialTheme.typography.labelSmall
+                                    )
+                                }
+                            }
                         }
                     }
                 }

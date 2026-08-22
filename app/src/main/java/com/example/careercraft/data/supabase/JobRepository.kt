@@ -63,6 +63,4 @@ class JobRepository {
             .map { it.jobId }
             .toSet()
     }
-
-
 }

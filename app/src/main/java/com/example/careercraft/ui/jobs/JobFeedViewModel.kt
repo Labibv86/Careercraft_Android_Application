@@ -3,6 +3,7 @@ package com.example.careercraft.ui.jobs
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.careercraft.data.models.Job
+import com.example.careercraft.data.models.UserProfileData
 import com.example.careercraft.data.supabase.AuthRepository
 import com.example.careercraft.data.supabase.JobRepository
 import com.example.careercraft.data.supabase.UserRepository
@@ -11,9 +12,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+data class JobWithClient(
+    val job: Job,
+    val client: UserProfileData
+)
+
 sealed class JobFeedUiState {
     data object Loading : JobFeedUiState()
-    data class Ready(val jobs: List<Job>) : JobFeedUiState()
+    data class Ready(val jobs: List<JobWithClient>) : JobFeedUiState()
     data class Error(val message: String) : JobFeedUiState()
 }
 
@@ -35,7 +41,15 @@ class JobFeedViewModel(
                     profile.careerPath?.substringBefore(" ") ?: profile.selectedCategories?.firstOrNull()
                 }
                 val appliedJobIds = userId?.let { jobRepository.getAppliedJobIds(it) } ?: emptySet()
-                _uiState.value = JobFeedUiState.Ready(jobRepository.getOpenJobs(preferredCategory, appliedJobIds))
+                val openJobs = jobRepository.getOpenJobs(preferredCategory, appliedJobIds)
+
+                // Fetch client info for each job
+                val jobsWithClient = openJobs.map { job ->
+                    val client = userRepository.getProfile(job.clientId)
+                    JobWithClient(job, client)
+                }
+
+                _uiState.value = JobFeedUiState.Ready(jobsWithClient)
             } catch (e: Exception) {
                 _uiState.value = JobFeedUiState.Error(e.message ?: "Could not load jobs.")
             }

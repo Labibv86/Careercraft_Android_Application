@@ -31,7 +31,8 @@ data class JobWithApplicantCounts(
 @Serializable
 data class ApplicantUserInfo(
     @SerialName("display_name") val displayName: String,
-    @SerialName("rating_score") val ratingScore: Double
+    @SerialName("rating_score") val ratingScore: Double,
+    @SerialName("photo_url") val photoUrl: String? = null  // ADD THIS
 )
 
 @Serializable

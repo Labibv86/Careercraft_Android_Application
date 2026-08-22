@@ -17,7 +17,9 @@ data class ContractDetailData(
     val contract: Contract,
     val jobTitle: String,
     val otherPartyName: String,
+    val otherPartyPhotoUrl: String?,  // ADD THIS
     val otherPartyRating: Double,
+    val otherPartyId: String,  // ADD THIS
     val isFreelancer: Boolean,
     val myPartComplete: Boolean
 )
@@ -70,7 +72,16 @@ class ContractDetailViewModel(
                 val myPartComplete = if (isFreelancer) contract.freelancerCompleted else contract.clientCompleted
 
                 _uiState.value = ContractDetailUiState.Ready(
-                    ContractDetailData(contract, job.title, otherParty.displayName, otherParty.ratingScore, isFreelancer, myPartComplete)
+                    ContractDetailData(
+                        contract = contract,
+                        jobTitle = job.title,
+                        otherPartyName = otherParty.displayName,
+                        otherPartyPhotoUrl = otherParty.photoUrl,  // ADD THIS
+                        otherPartyRating = otherParty.ratingScore,
+                        otherPartyId = otherPartyId,  // ADD THIS
+                        isFreelancer = isFreelancer,
+                        myPartComplete = myPartComplete
+                    )
                 )
             } catch (e: Exception) {
                 _uiState.value = ContractDetailUiState.Error(e.message ?: "Could not load contract.")

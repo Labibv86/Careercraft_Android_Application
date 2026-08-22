@@ -167,7 +167,10 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             )
         }
         composable(Routes.JOB_FEED) {
-            JobFeedScreen(onJobClick = { jobId -> navController.navigate(Routes.jobDetail(jobId)) })
+            JobFeedScreen(
+                onJobClick = { jobId -> navController.navigate(Routes.jobDetail(jobId)) },
+                navController = navController  // Pass navController
+            )
         }
         composable(
             route = Routes.JOB_DETAIL,
@@ -211,7 +214,12 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             val jobId = backStackEntry.arguments?.getString("jobId") ?: return@composable
             JobApplicantsScreen(
                 jobId = jobId,
-                onHired = { contractId -> navController.navigate(Routes.contractDetail(contractId)) { popUpTo(Routes.CLIENT_HOME) } }
+                onHired = { contractId ->
+                    navController.navigate(Routes.contractDetail(contractId)) {
+                        popUpTo(Routes.CLIENT_HOME)
+                    }
+                },
+                navController = navController  // Pass navController
             )
         }
         composable(
@@ -222,8 +230,13 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             ContractDetailScreen(
                 contractId = contractId,
                 onOpenChat = { navController.navigate(Routes.chat(it)) },
-                onNeedsRating = { id -> navController.navigate(Routes.rating(id)) { popUpTo(Routes.contractDetail(id)) { inclusive = true } } },
-                onShowHistory = { id -> navController.navigate(Routes.history(id)) { popUpTo(Routes.contractDetail(id)) { inclusive = true } } }
+                onNeedsRating = { id -> navController.navigate(Routes.rating(id)) {
+                    popUpTo(Routes.contractDetail(id)) { inclusive = true }
+                } },
+                onShowHistory = { id -> navController.navigate(Routes.history(id)) {
+                    popUpTo(Routes.contractDetail(id)) { inclusive = true }
+                } },
+                navController = navController  // Pass navController
             )
         }
         composable(Routes.CHAT_LIST) {
@@ -234,7 +247,10 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             arguments = listOf(navArgument("contractId") { type = NavType.StringType })
         ) { backStackEntry ->
             val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
-            ChatScreen(contractId = contractId)
+            ChatScreen(
+                contractId = contractId,
+                navController = navController  // Pass navController
+            )
         }
 
         composable(Routes.FREELANCER_JOBS) {

@@ -10,49 +10,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="502b29b6-c6ac-4670-ae06-4d2d7a4f302f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/common/ProfilePicture.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/profile/PublicProfileViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/9.6.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/.globals.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/.strings.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/_app.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/buildfingerprint.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/classloaderscopes.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/entry.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/projectfingerprint.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/15f71ace-b8bf-49c4-9003-00c31235f1d3/work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/395f2b3f-d34f-466e-87d2-b7cd97ec8c75/classloaderscopes9811946652853554809.tmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/78152df0-411a-4fbf-8587-9f51ff9f201e/classloaderscopes10193486890648420594.tmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8ge66jsfzpnbfyx0jrdywdouf/candidates.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/8ge66jsfzpnbfyx0jrdywdouf/candidates.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/a4qgadbe9v3dcme754lpkpmg1/candidates.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/a4qgadbe9v3dcme754lpkpmg1/candidates.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e0240d10-3af7-4477-8483-d80d17f43b2d/classloaderscopes4518922735447342876.tmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/.globals.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/.strings.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/_app.work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/buildfingerprint.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/classloaderscopes.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/entry.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/projectfingerprint.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/fc8c44f9-9261-41ab-ba6d-7b4ab2fd2111/work.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/Job.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/Job.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/UserUpdates.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/UserUpdates.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/ClientModels.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/ClientModels.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/UserProfileData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/model/UserProfileData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/supabase/JobRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/supabase/JobRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/supabase/UserRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/data/supabase/UserRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/ClientDashboardViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/ClientDashboardViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/ClientHomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/ClientHomeScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/MyJobsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/MyJobsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/MyJobsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/MyJobsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/dashboard/DashboardViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/dashboard/DashboardViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/dashboard/FreelancerHomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/dashboard/FreelancerHomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/navigation/NavGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/navigation/NavGraph.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/JobApplicantsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/client/JobApplicantsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatListViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ChatViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ContractDetailScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ContractDetailScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ContractDetailViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/contracts/ContractDetailViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/JobFeedScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/JobFeedScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/JobFeedViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/JobFeedViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/ProposalFormViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/jobs/ProposalFormViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/onboarding/OnboardingViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/onboarding/OnboardingViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/profile/PublicProfileScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/careercraft/ui/profile/PublicProfileScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
