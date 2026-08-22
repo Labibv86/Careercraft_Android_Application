@@ -12,8 +12,10 @@ import com.example.careercraft.data.models.ContractSummary
 import com.example.careercraft.data.models.ProposalDetails
 import com.example.careercraft.data.models.ReviewRecord
 
+
 class ContractRepository {
     private val postgrest = SupabaseClient.client.postgrest
+
 
     suspend fun getContract(contractId: String): Contract {
         return postgrest.from("contracts")
@@ -21,6 +23,7 @@ class ContractRepository {
             .decodeSingle()
     }
 
+    // Update getMessages method to include files
     suspend fun getMessages(contractId: String): List<ChatMessage> {
         return postgrest.from("messages")
             .select {

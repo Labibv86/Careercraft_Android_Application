@@ -17,11 +17,12 @@ data class ContractDetailData(
     val contract: Contract,
     val jobTitle: String,
     val otherPartyName: String,
-    val otherPartyPhotoUrl: String?,  // ADD THIS
+    val otherPartyPhotoUrl: String?,
     val otherPartyRating: Double,
-    val otherPartyId: String,  // ADD THIS
+    val otherPartyId: String,
     val isFreelancer: Boolean,
-    val myPartComplete: Boolean
+    val myPartComplete: Boolean,
+    val canMarkComplete: Boolean
 )
 
 sealed class ContractDetailUiState {
@@ -43,7 +44,11 @@ class ContractDetailViewModel(
     private val _uiState = MutableStateFlow<ContractDetailUiState>(ContractDetailUiState.Loading)
     val uiState: StateFlow<ContractDetailUiState> = _uiState.asStateFlow()
 
-    init { load() }
+    init { refresh() }  // Call refresh instead of load
+
+    fun refresh() {
+        load()
+    }
 
     private fun load() {
         val myId = authRepository.currentUserId()
@@ -53,6 +58,7 @@ class ContractDetailViewModel(
         }
         viewModelScope.launch {
             try {
+                // Force fresh data by fetching from database
                 val contract = contractRepository.getContract(contractId)
 
                 if (contract.status == "completed") {
@@ -71,16 +77,24 @@ class ContractDetailViewModel(
                 val otherParty = userRepository.getProfile(otherPartyId)
                 val myPartComplete = if (isFreelancer) contract.freelancerCompleted else contract.clientCompleted
 
+                // Determine if user can mark complete
+                val canMarkComplete = when {
+                    contract.status == "completed" -> false
+                    isFreelancer -> !contract.freelancerCompleted
+                    else -> contract.freelancerCompleted && contract.paymentStatus == "paid"
+                }
+
                 _uiState.value = ContractDetailUiState.Ready(
                     ContractDetailData(
                         contract = contract,
                         jobTitle = job.title,
                         otherPartyName = otherParty.displayName,
-                        otherPartyPhotoUrl = otherParty.photoUrl,  // ADD THIS
+                        otherPartyPhotoUrl = otherParty.photoUrl,
                         otherPartyRating = otherParty.ratingScore,
-                        otherPartyId = otherPartyId,  // ADD THIS
+                        otherPartyId = otherPartyId,
                         isFreelancer = isFreelancer,
-                        myPartComplete = myPartComplete
+                        myPartComplete = myPartComplete,
+                        canMarkComplete = canMarkComplete
                     )
                 )
             } catch (e: Exception) {
@@ -95,7 +109,8 @@ class ContractDetailViewModel(
         viewModelScope.launch {
             try {
                 contractRepository.markComplete(contractId, state.data.isFreelancer)
-                load()
+                // Refresh immediately after marking complete
+                refresh()
             } catch (e: Exception) {
                 _uiState.value = ContractDetailUiState.Error(e.message ?: "Could not update contract.")
             }

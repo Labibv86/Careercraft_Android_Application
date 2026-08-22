@@ -15,7 +15,9 @@ data class Contract(
     @SerialName("proposal_id") val proposalId: String,
     @SerialName("freelancer_completed") val freelancerCompleted: Boolean,
     @SerialName("client_completed") val clientCompleted: Boolean,
-    @SerialName("chat_active") val chatActive: Boolean
+    @SerialName("chat_active") val chatActive: Boolean,
+    @SerialName("payment_status") val paymentStatus: String? = null,  // ADD THIS
+    @SerialName("transaction_id") val transactionId: String? = null
 )
 
 @Serializable
@@ -25,7 +27,8 @@ data class ChatMessage(
     @SerialName("sender_id") val senderId: String,
     @SerialName("receiver_id") val receiverId: String,
     val content: String,
-    @SerialName("created_at") val createdAt: String
+    @SerialName("created_at") val createdAt: String,
+
 )
 
 @Serializable
@@ -58,7 +61,9 @@ data class ContractSummary(
     @SerialName("freelancer_name") val freelancerName: String,
     @SerialName("client_id") val clientId: String,
     @SerialName("client_name") val clientName: String,
-    val status: String
+
+    val status: String,
+    @SerialName("payment_status") val paymentStatus: String? = null
 )
 
 

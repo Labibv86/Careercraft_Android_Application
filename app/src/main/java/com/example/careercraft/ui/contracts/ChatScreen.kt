@@ -71,19 +71,29 @@ fun ChatScreen(
 
                 // MESSAGES
                 LazyColumn(
-                    modifier = Modifier.weight(1f).fillMaxWidth().padding(16.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(state.messages, key = { it.messageId }) { message ->
                         val isMine = message.senderId == state.myId
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = if (isMine) Arrangement.End else Arrangement.Start) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = if (isMine) Arrangement.End else Arrangement.Start
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
                                     .background(if (isMine) DeepGrey else LightGrey)
                                     .padding(horizontal = 14.dp, vertical = 10.dp)
                             ) {
-                                Text(message.content, color = if (isMine) White else Black, style = MaterialTheme.typography.bodyMedium)
+                                Text(
+                                    message.content,
+                                    color = if (isMine) White else Black,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
@@ -91,7 +101,12 @@ fun ChatScreen(
 
                 // INPUT
                 if (state.contract.chatActive) {
-                    Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         OutlinedTextField(
                             value = messageText,
                             onValueChange = { messageText = it },
@@ -101,9 +116,17 @@ fun ChatScreen(
                         )
                         Spacer(Modifier.width(8.dp))
                         Button(
-                            onClick = { viewModel.sendMessage(messageText); messageText = "" },
-                            colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
-                        ) { Text("Send") }
+                            onClick = {
+                                viewModel.sendMessage(messageText)
+                                messageText = ""
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = DeepGrey,
+                                contentColor = White
+                            )
+                        ) {
+                            Text("Send")
+                        }
                     }
                 }
             }

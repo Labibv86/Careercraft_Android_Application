@@ -25,24 +25,35 @@ fun ClientHomeScreen(
 
     Box(modifier = Modifier.fillMaxSize().background(White)) {
         when (val state = uiState) {
-            is ClientDashboardUiState.Loading -> CircularProgressIndicator(color = Black, modifier = Modifier.align(Alignment.Center))
-            is ClientDashboardUiState.Error -> Text(state.message, color = Red, modifier = Modifier.align(Alignment.Center).padding(24.dp))
+            is ClientDashboardUiState.Loading ->
+                CircularProgressIndicator(color = Black, modifier = Modifier.align(Alignment.Center))
+            is ClientDashboardUiState.Error ->
+                Text(state.message, color = Red, modifier = Modifier.align(Alignment.Center).padding(24.dp))
             is ClientDashboardUiState.Ready -> {
                 val data = state.data
                 Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+                    // Header Row - Simple
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Hi, ${data.profile.displayName} \uD83D\uDC4B", style = MaterialTheme.typography.titleLarge, color = Black)
+                        Text(
+                            "Hi, ${data.profile.displayName} 👋",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Black
+                        )
                         TextButton(onClick = { viewModel.signOut(onSignedOut) }) {
                             Text("Log Out", color = Red)
                         }
                     }
+
                     Spacer(Modifier.height(20.dp))
 
-                    DashboardCard(title = "Active Jobs: ${data.activeJobs}", subtitle = "Applications Received: ${data.applicationsReceived}")
+                    DashboardCard(
+                        title = "Active Jobs: ${data.activeJobs}",
+                        subtitle = "Applications Received: ${data.applicationsReceived}"
+                    )
                     Spacer(Modifier.height(12.dp))
                     DashboardCard(
                         title = "Active Contracts: ${data.activeContracts}",
@@ -54,19 +65,21 @@ fun ClientHomeScreen(
                         onClick = onPostJob,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
-                    ) { Text("\uD83D\uDCDD POST JOB") }
+                    ) { Text("📝 POST JOB") }
                     Spacer(Modifier.height(10.dp))
+
                     Button(
                         onClick = onMyJobs,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCCA MY JOBS") }
+                    ) { Text("📊 MY JOBS") }
                     Spacer(Modifier.height(10.dp))
+
                     Button(
                         onClick = onMessages,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCAC MESSAGES") }
+                    ) { Text("💬 MESSAGES") }
                 }
             }
         }

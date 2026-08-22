@@ -26,6 +26,12 @@ fun ContractDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // IMPORTANT: Refresh every time this screen is displayed
+    // This runs on every recomposition, not just the first time
+    LaunchedEffect(Unit) {
+        viewModel.refresh()
+    }
+
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is ContractDetailUiState.NeedsRating -> onNeedsRating(state.contractId)
@@ -68,8 +74,15 @@ fun ContractDetailScreen(
                     }
                     Spacer(Modifier.height(4.dp))
                     Text("Pay: $${data.contract.payAmount.toInt()} · Duration: ${data.contract.duration}", color = Grey, style = MaterialTheme.typography.bodyMedium)
-                    Spacer(Modifier.height(4.dp))
-                    Text("Status: ${data.contract.status}", color = Grey, style = MaterialTheme.typography.bodyMedium)
+
+                    // Payment Status
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Payment: ${data.contract.paymentStatus ?: "pending"}", color = Grey, style = MaterialTheme.typography.bodyMedium)
+                        Text("Status: ${data.contract.status}", color = Grey, style = MaterialTheme.typography.bodyMedium)
+                    }
                     Spacer(Modifier.height(24.dp))
 
                     Button(
@@ -78,12 +91,50 @@ fun ContractDetailScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
                     ) { Text("OPEN CHAT") }
                     Spacer(Modifier.height(10.dp))
-                    Button(
-                        onClick = { viewModel.markComplete() },
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White),
-                        enabled = !data.myPartComplete
-                    ) { Text(if (data.myPartComplete) "WAITING FOR OTHER PARTY" else "MARK COMPLETE") }
+
+                    // PAYMENT BUTTON - Only show if:
+                    // 1. User is client
+                    // 2. Freelancer has completed work
+                    // 3. Payment is not paid yet
+                    if (!data.isFreelancer &&
+                        data.contract.freelancerCompleted &&
+                        data.contract.paymentStatus != "paid") {
+                        Button(
+                            onClick = {
+                                navController.navigate(Routes.payment(
+                                    contractId = data.contract.contractId,
+                                    freelancerId = data.contract.freelancerId,
+                                    amount = data.contract.payAmount,
+                                    jobTitle = data.jobTitle
+                                ))
+                            },
+                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
+                        ) { Text("💰 CLEAR PAYMENT") }
+                        Spacer(Modifier.height(10.dp))
+                    }
+
+                    // MARK COMPLETE button - Only show if can complete
+                    if (data.canMarkComplete) {
+                        Button(
+                            onClick = { viewModel.markComplete() },
+                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
+                        ) {
+                            Text(if (data.isFreelancer) "COMPLETE WORK" else "MARK COMPLETE")
+                        }
+                        Spacer(Modifier.height(10.dp))
+                    }
+
+                    // Show waiting message if applicable
+                    if (data.myPartComplete && data.contract.status != "completed") {
+                        Text(
+                            "Waiting for other party to complete...",
+                            color = Grey,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
                 }
             }
         }

@@ -9,11 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.careercraft.ui.common.DashboardCard
-import com.example.careercraft.ui.theme.Black
-import com.example.careercraft.ui.theme.DeepGrey
-import com.example.careercraft.ui.theme.LightGrey
-import com.example.careercraft.ui.theme.Red
-import com.example.careercraft.ui.theme.White
+import com.example.careercraft.ui.theme.*
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
@@ -43,16 +39,22 @@ fun FreelancerHomeScreen(
             is DashboardUiState.Ready -> {
                 val profile = state.profile
                 Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+                    // Header Row - Simple
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Hi, ${profile.displayName} \uD83D\uDC4B", style = MaterialTheme.typography.titleLarge, color = Black)
+                        Text(
+                            "Hi, ${profile.displayName} 👋",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Black
+                        )
                         TextButton(onClick = { viewModel.signOut(onSignedOut) }) {
                             Text("Log Out", color = Red)
                         }
                     }
+
                     Spacer(Modifier.height(20.dp))
 
                     DashboardCard(
@@ -70,32 +72,35 @@ fun FreelancerHomeScreen(
                         onClick = onFindJobs,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = DeepGrey, contentColor = White)
-                    ) { Text("\uD83D\uDD0D FIND JOBS") }
+                    ) { Text("🔍 FIND JOBS") }
                     Spacer(Modifier.height(10.dp))
 
-                    Spacer(Modifier.height(10.dp))
                     Button(
                         onClick = onMyJobs,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCC1 MY JOBS") }
+                    ) { Text("📁 MY JOBS") }
+                    Spacer(Modifier.height(10.dp))
+
                     Button(
                         onClick = onPortfolio,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCC2 MY PORTFOLIO") }
+                    ) { Text("📂 MY PORTFOLIO") }
                     Spacer(Modifier.height(10.dp))
+
                     Button(
                         onClick = onMessages,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCAC MESSAGES") }
+                    ) { Text("💬 MESSAGES") }
                     Spacer(Modifier.height(10.dp))
+
                     Button(
                         onClick = onProposals,
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = LightGrey, contentColor = Black)
-                    ) { Text("\uD83D\uDCCB MY PROPOSALS") }
+                    ) { Text("📋 MY PROPOSALS") }
                 }
             }
         }

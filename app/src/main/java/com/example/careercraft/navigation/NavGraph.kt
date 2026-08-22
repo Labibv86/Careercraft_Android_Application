@@ -1,4 +1,5 @@
 package com.example.careercraft.navigation
+
 import com.example.careercraft.ui.onboarding.*
 import com.example.careercraft.ui.auth.*
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,11 @@ import com.example.careercraft.ui.client.*
 import com.example.careercraft.ui.contracts.*
 import com.example.careercraft.ui.portfolio.*
 import com.example.careercraft.ui.profile.*
+import com.example.careercraft.ui.payment.PaymentScreen
+
+
+
+
 
 
 object Routes {
@@ -53,7 +59,7 @@ object Routes {
     const val PORTFOLIO_GRID = "portfolio_grid"
     const val PORTFOLIO_FORM = "portfolio_form"
     const val PROFILE_SETTINGS = "profile_settings"
-    const val NOTIFICATIONS = "notifications"
+
     const val RATING = "rating/{contractId}"
     fun rating(contractId: String) = "rating/$contractId"
 
@@ -61,6 +67,12 @@ object Routes {
     const val PUBLIC_PROFILE = "public_profile/{userId}"
     fun history(contractId: String) = "history/$contractId"
     fun publicProfile(userId: String) = "public_profile/$userId"
+
+    const val PAYMENT = "payment/{contractId}/{freelancerId}/{amount}/{jobTitle}"
+    fun payment(contractId: String, freelancerId: String, amount: Double, jobTitle: String): String {
+        return "payment/$contractId/$freelancerId/$amount/${jobTitle.replace(" ", "_")}"
+    }
+
 
 
 
@@ -144,6 +156,8 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 }
             )
         }
+
+
         composable(Routes.FREELANCER_HOME) {
             FreelancerHomeScreen(
                 onFindJobs = { navController.navigate(Routes.JOB_FEED) },
@@ -153,7 +167,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 onProposals = { navController.navigate(Routes.MY_PROPOSALS) },
                 onSignedOut = {
                     navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } }
-                }
+                },
             )
         }
         composable(Routes.CLIENT_HOME) {
@@ -164,6 +178,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                 onSignedOut = {
                     navController.navigate(Routes.LOGIN) { popUpTo(0) { inclusive = true } }
                 }
+
             )
         }
         composable(Routes.JOB_FEED) {
@@ -219,7 +234,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
                         popUpTo(Routes.CLIENT_HOME)
                     }
                 },
-                navController = navController  // Pass navController
+                navController = navController
             )
         }
         composable(
@@ -249,7 +264,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
             ChatScreen(
                 contractId = contractId,
-                navController = navController  // Pass navController
+                navController = navController
             )
         }
 
@@ -263,7 +278,7 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
             PortfolioFormScreen(onSaved = { navController.popBackStack() })
         }
         composable(Routes.PROFILE_SETTINGS) { PlaceholderScreen("Profile Settings") }
-        composable(Routes.NOTIFICATIONS) { PlaceholderScreen("Notifications") }
+
         composable(
             route = Routes.RATING,
             arguments = listOf(navArgument("contractId") { type = NavType.StringType })
@@ -289,6 +304,33 @@ fun CareerCraftNavGraph(navController: NavHostController = rememberNavController
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
             PublicProfileScreen(userId = userId)
+        }
+
+        composable(
+            route = Routes.PAYMENT,
+            arguments = listOf(
+                navArgument("contractId") { type = NavType.StringType },
+                navArgument("freelancerId") { type = NavType.StringType },
+                navArgument("amount") { type = NavType.FloatType },
+                navArgument("jobTitle") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val contractId = backStackEntry.arguments?.getString("contractId") ?: return@composable
+            val freelancerId = backStackEntry.arguments?.getString("freelancerId") ?: return@composable
+            val amount = backStackEntry.arguments?.getFloat("amount") ?: 0f
+            val jobTitle = backStackEntry.arguments?.getString("jobTitle")?.replace("_", " ") ?: "Contract"
+
+            PaymentScreen(
+                contractId = contractId,
+                freelancerId = freelancerId,
+                amount = amount.toDouble(),
+                jobTitle = jobTitle,
+                onPaymentComplete = {
+                    // Navigate back to contract detail with refresh
+                    navController.popBackStack()
+                    // After popping back, the contract detail will refresh because of LaunchedEffect(Unit)
+                }
+            )
         }
 
 
